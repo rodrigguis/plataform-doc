@@ -4,19 +4,20 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
+import java.io.Closeable;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
 
-class KafkaService {
+class KafkaService implements Closeable {
 
     private final KafkaConsumer<String, String> consumer;
     private final ConsumerFunction parse;
 
     KafkaService(String groupId, String topic, ConsumerFunction parse) {
         this.parse = parse;
-        this.consumer = new KafkaConsumer<String, String>(getProperties(groupId));
+        this.consumer = new KafkaConsumer<>(getProperties(groupId));
         consumer.subscribe(Collections.singletonList(topic));
     }
 
@@ -43,5 +44,10 @@ class KafkaService {
         properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, UUID.randomUUID().toString());
 
         return properties;
+    }
+
+    @Override
+    public void close() {
+        consumer.close();
     }
 }

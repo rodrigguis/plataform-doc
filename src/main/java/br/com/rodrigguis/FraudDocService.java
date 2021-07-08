@@ -3,13 +3,14 @@ package br.com.rodrigguis;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class FraudDocService {
-    final static String TOPIC = "PLATAFORM_NEW_DOC";
-    final static String GROUP_ID = FraudDocService.class.getSimpleName();
+    static String TOPIC = "PLATAFORM_NEW_DOC";
+    static String GROUP_ID = FraudDocService.class.getSimpleName();
 
     public static void main(String[] args) {
         var fraudDocService = new FraudDocService();
-        final var kafkaService = new KafkaService(GROUP_ID, TOPIC, fraudDocService::parse);
-        kafkaService.run();
+        try (final var kafkaService = new KafkaService(GROUP_ID, TOPIC, fraudDocService::parse)) {
+            kafkaService.run();
+        }
     }
 
     private void parse(ConsumerRecord<String, String> messageRecord) {
