@@ -7,6 +7,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.UUID;
 
 public class FraudDocService {
     final static String TOPIC = "PLATAFORM_NEW_DOC";
@@ -47,6 +48,7 @@ public class FraudDocService {
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, FraudDocService.class.getName());
+        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, FraudDocService.class.getName() + UUID.randomUUID().toString());
 
         return properties;
     }
