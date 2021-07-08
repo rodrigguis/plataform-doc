@@ -3,14 +3,14 @@ package br.com.rodrigguis;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class EmailDocService {
-    final static String TOPIC = "PLATAFORM_EMAIL_DOC";
-    final static String GROUP_ID = EmailDocService.class.getSimpleName();
+    static String TOPIC = "PLATAFORM_EMAIL_DOC";
+    static String GROUP_ID = EmailDocService.class.getSimpleName();
 
     public static void main(String[] args) {
         final var emailDocService = new EmailDocService();
-        final var kafkaService = new KafkaService(GROUP_ID, TOPIC, emailDocService::parse);
-
-        kafkaService.run();
+        try (final var kafkaService = new KafkaService(GROUP_ID, TOPIC, emailDocService::parse)) {
+            kafkaService.run();
+        }
     }
 
     private void parse(ConsumerRecord<String, String> messageRecord) {

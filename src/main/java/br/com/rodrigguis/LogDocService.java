@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 public class LogDocService {
-    final static String TOPIC_PATTERN= "PLATAFORM.*";
+    static String TOPIC_PATTERN = "PLATAFORM.*";
 
     public static void main(String[] args) {
         var consumer = new KafkaConsumer<String, String>(getProperties());
